@@ -4,22 +4,21 @@ import { ethers } from "hardhat";
 // npx hardhat test test/OracleTest
 describe("TestOracle", function () {
     async function deployContractsFixture() {
-        //deploy mock oracle
-        const MockOracle = await ethers.getContractFactory("MockV3Aggregator");
-        const mockOracle = await MockOracle.deploy(
+        const MockOracleFactory = await ethers.getContractFactory("MockV3Aggregator");
+        const mockOracle = await MockOracleFactory.deploy(
             "18", // decimals
             "1000"// initialAnswer
         );
 
-        const PriceConsumer = await ethers.getContractFactory("PriceConsumerV3");
+        const PriceConsumerFactory = await ethers.getContractFactory("PriceConsumerV3");
         const address = await mockOracle.getAddress();
-        const priceConsumer = await PriceConsumer.deploy(address);
+        const priceConsumer = await PriceConsumerFactory.deploy(address);
 
         return { mockOracle, priceConsumer };
     }
 
     it("get oracle initial answer", async function () {
-        const { mockOracle, priceConsumer } = await deployContractsFixture();
+        const { priceConsumer } = await deployContractsFixture();
         const answer = await priceConsumer.getLatestPrice();
         expect(Number(answer)).to.equal(1000);
     });
