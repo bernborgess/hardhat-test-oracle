@@ -2,12 +2,12 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 
 // npx hardhat test test/OracleTest
-describe("TestOracle", function () {
+describe("DollarPriceTest", function () {
     async function deployContractsFixture() {
         const MockOracleFactory = await ethers.getContractFactory("MockV3Aggregator");
         const mockOracle = await MockOracleFactory.deploy(
             "18", // decimals
-            "607"// initialAnswer
+            "607"// initialAnswer 1 USD = 6.07 BRL
         );
 
         const PriceConsumerFactory = await ethers.getContractFactory("DollarPriceConsumer");
