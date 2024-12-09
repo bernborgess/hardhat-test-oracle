@@ -7,10 +7,10 @@ describe("TestOracle", function () {
         const MockOracleFactory = await ethers.getContractFactory("MockV3Aggregator");
         const mockOracle = await MockOracleFactory.deploy(
             "18", // decimals
-            "1000"// initialAnswer
+            "607"// initialAnswer
         );
 
-        const PriceConsumerFactory = await ethers.getContractFactory("PriceConsumerV3");
+        const PriceConsumerFactory = await ethers.getContractFactory("DollarPriceConsumer");
         const address = await mockOracle.getAddress();
         const priceConsumer = await PriceConsumerFactory.deploy(address);
 
@@ -19,14 +19,14 @@ describe("TestOracle", function () {
 
     it("get oracle initial answer", async function () {
         const { priceConsumer } = await deployContractsFixture();
-        const answer = await priceConsumer.getLatestPrice();
-        expect(Number(answer)).to.equal(1000);
+        const dollarPrice = await priceConsumer.getLatestDollarPrice();
+        expect(Number(dollarPrice)).to.equal(607);
     });
 
     it("change mock data and get new oracle answer", async function () {
         const { mockOracle, priceConsumer } = await deployContractsFixture();
-        await mockOracle.updateAnswer("2000");
-        const answer = await priceConsumer.getLatestPrice();
-        expect(Number(answer)).to.equal(2000);
+        await mockOracle.updateAnswer("700");
+        const dollarPrice = await priceConsumer.getLatestDollarPrice();
+        expect(Number(dollarPrice)).to.equal(700);
     });
 })

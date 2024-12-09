@@ -3,7 +3,7 @@ pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-contract PriceConsumerV3 {
+contract DollarPriceConsumer {
     AggregatorV3Interface internal priceFeed;
 
     constructor(address _feedAddress) {
@@ -11,7 +11,7 @@ contract PriceConsumerV3 {
     }
 
     // Returns the latest price.
-    function getLatestPrice() public view returns (int) {
+    function getLatestDollarPrice() public view returns (int) {
         (, int price, , , ) = priceFeed.latestRoundData();
         return price;
     }
